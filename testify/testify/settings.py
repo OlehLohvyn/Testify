@@ -72,13 +72,19 @@ WSGI_APPLICATION = 'testify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', default=5432, cast=int),
+        'NAME': 'app_db',
+        'USER': 'app_user',
+        'PASSWORD': 'secure_password',
+        'HOST': 'postgres',  # ім'я сервісу в Kubernetes
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'disable',  # або 'require' якщо використовуєте SSL
+        },
     }
 }
+
+
+
 
 
 
