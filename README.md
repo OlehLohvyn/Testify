@@ -72,11 +72,3 @@
    ```bash
    minikube service drf-app-service --url
    ```
-
-6. **Database Setup (if required)**
-
-   If you're using PostgreSQL or another database, make sure it's deployed and connected to your app. You can use `kubectl` to check the status of the relevant pods.
-
----
-
-This is the complete documentation for running your project in Kubernetes, starting from cloning the repository and ending with accessing the service through Minikube. help in managing your local Kubernetes cluster with Minikube, monitoring its status, and ensuring that your database is accessible and running properly.
