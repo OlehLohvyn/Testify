@@ -51,3 +51,4 @@ test_data/
 
 # Windows files
 Thumbs.db
+/linux-amd64/
