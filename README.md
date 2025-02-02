@@ -8,67 +8,68 @@
 - Documentation
 
 ---
+# Deployment Instructions for Kubernetes
 
-## How to Run the Project in Kubernetes
+## Prerequisites
+- Installed [Minikube](https://minikube.sigs.k8s.io/docs/)
+- Installed [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- Installed [Docker](https://www.docker.com/)
+- Git installed
 
-1. **Clone the Repository**
+## Steps to Deploy
 
-   Start by cloning the repository using Git:
-   ```bash
-   git clone https://your-repository-url.git
-   cd your-repository
-   ```
+### 1. Clone the Repository
+```sh
+git clone https://github.com/OlehLohvyn/Testify.git
+cd Testify
+```
 
-2. **Create a Virtual Environment and Install Dependencies**
+### 2. Start Minikube
+```sh
+minikube start
+```
 
-   Create a virtual environment:
-   ```bash
-   python -m venv venv
-   ```
+### 3. Apply Kubernetes Configurations
+Run the following command to deploy all configurations from the `k8s` directory:
+```sh
+kubectl apply -f k8s/
+```
 
-   Activate it:
-   - For Windows:
-     ```bash
-     .\venv\Scripts\activate
-     ```
-   - For Linux/MacOS:
-     ```bash
-     source venv/bin/activate
-     ```
+### 4. Verify Deployments
+Check if all pods are running correctly:
+```sh
+kubectl get pods
+```
 
-   Install the dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+Check if services are running:
+```sh
+kubectl get services
+```
 
-3. **Build the Docker Image**
+### 5. Access the DRF Application
+Find the Minikube service URL:
+```sh
+minikube service drf-app-service --url
+```
+Use the provided URL to access the Django REST Framework application.
 
-   - Build the Docker image for your app:
-     ```bash
-     docker build -t olehlohvyn2003/my-drf-app:latest .
-     ```
+### 6. (Optional) Debugging
+If something goes wrong, check logs:
+```sh
+kubectl logs -l app=drf-app
+```
+To describe a pod for detailed info:
+```sh
+kubectl describe pod <pod-name>
+```
 
-4. **Deploy the App and Service in Kubernetes**
+### 7. Stop and Cleanup
+To stop Minikube:
+```sh
+minikube stop
+```
+To delete everything:
+```sh
+kubectl delete -f k8s/
+```
 
-   Navigate to the directory with your YAML files:
-   ```bash
-   cd k8s
-   ```
-
-   Apply all the necessary Kubernetes files to deploy the app and the service:
-   ```bash
-   kubectl apply -f .
-   ```
-
-   Make sure all resources have been successfully deployed:
-   ```bash
-   kubectl get pods
-   kubectl get svc
-   ```
-
-5. **Check Service Availability**
-
-   To check if your app is running correctly, use the following command to get the service URL:
-   ```bash
-   minikube service drf-app-service --url
-   ```
