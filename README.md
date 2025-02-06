@@ -73,3 +73,14 @@ To delete everything:
 kubectl delete -f k8s/
 ```
 
+### 8. Django Migrations
+
+```sh
+kubectl exec -it <pod_name> -- python testify/manage.py migrate
+```
+
+### 9. Django Tests
+Run tests for django `users` app
+```sh
+kubectl exec -it <pod_name> -- python testify/manage.py test users
+```

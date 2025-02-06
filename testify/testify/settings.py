@@ -1,6 +1,8 @@
 from decouple import config
 from pathlib import Path
 
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -69,19 +71,26 @@ WSGI_APPLICATION = 'testify.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
+def read_secret(secret_name):
+    secret_path = f"/etc/secrets/{secret_name}"
+    try:
+        with open(secret_path, "r") as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        return None
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'app_db',
-        'USER': 'app_user',
-        'PASSWORD': 'secure_password',
-        'HOST': 'postgres',  # ім'я сервісу в Kubernetes
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'disable',  # або 'require' якщо використовуєте SSL
-        },
+        'NAME': read_secret("DB_NAME") or os.environ.get('DB_NAME', 'default_db'),
+        'USER': read_secret("DB_USER") or os.environ.get('DB_USER', 'default_user'),
+        'PASSWORD': read_secret("DB_PASSWORD") or os.environ.get('DB_PASSWORD', 'default_password'),
+        'HOST': read_secret("DB_HOST") or os.environ.get('DB_HOST', 'localhost'),
+        'PORT': read_secret("DB_PORT") or os.environ.get('DB_PORT', '5432'),
     }
 }
+
 
 
 
