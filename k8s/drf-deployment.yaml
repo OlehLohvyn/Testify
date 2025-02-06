@@ -12,6 +12,10 @@ spec:
       labels:
         app: drf-app
     spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox
+          command: ['sh', '-c', 'until nc -z postgres 5432; do echo "Waiting for PostgreSQL..."; sleep 2; done;']
       containers:
         - name: drf-app
           image: olehlohvyn2003/my-drf-app:latest
