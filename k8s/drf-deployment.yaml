@@ -21,14 +21,20 @@ spec:
           image: olehlohvyn2003/my-drf-app:latest
           ports:
             - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: db-config
           env:
-            - name: DB_NAME
-              value: app_db
-            - name: DB_USER
-              value: app_user
             - name: DB_PASSWORD
-              value: secure_password
-            - name: DB_HOST
-              value: postgres
-            - name: DB_PORT
-              value: "5432"
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+          volumeMounts:
+            - name: secret-volume
+              mountPath: "/etc/secrets"
+              readOnly: true
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: db-secret
