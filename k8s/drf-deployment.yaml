@@ -14,27 +14,16 @@ spec:
     spec:
       initContainers:
         - name: wait-for-postgres
-          image: busybox
-          command: ['sh', '-c', 'until nc -z postgres 5432; do echo "Waiting for PostgreSQL..."; sleep 2; done;']
+          image: postgres:15
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432; do echo "Waiting for PostgreSQL..."; sleep 2; done;']
       containers:
         - name: drf-app
           image: olehlohvyn2003/my-drf-app:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
             - configMapRef:
                 name: db-config
-          env:
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_PASSWORD
-          volumeMounts:
-            - name: secret-volume
-              mountPath: "/etc/secrets"
-              readOnly: true
-      volumes:
-        - name: secret-volume
-          secret:
-            secretName: db-secret
+            - secretRef:
+                name: db-secret

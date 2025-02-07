@@ -1,86 +1,19 @@
-## About Project
+# Testify Project Documentation
 
-[Link to Figma Project](https://www.figma.com/design/bZFeDHTvUClLRDUQ0qix3s/Testify?node-id=0-1&t=7d5QjOapUCQld9nB-1)
 
-### Development Principles
-- Scalability
-- Unit tests
-- Documentation
+## Project Overview
 
----
-# Deployment Instructions for Kubernetes
+This project is a Django REST Framework (DRF) application with PostgreSQL, deployed using Kubernetes and Minikube. It follows principles of scalability, unit tests, and documentation.
 
-## Prerequisites
-- Installed [Minikube](https://minikube.sigs.k8s.io/docs/)
-- Installed [kubectl](https://kubernetes.io/docs/tasks/tools/)
-- Installed [Docker](https://www.docker.com/)
-- Git installed
+## Setup and Deployment
 
-## Steps to Deploy
+For detailed instructions on how to set up and deploy the project, refer to the [Setup and Deployment guide](docs/setup.md).
 
-### 1. Clone the Repository
-```sh
-git clone https://github.com/OlehLohvyn/Testify.git
-cd Testify
-```
+## Secrets Management
 
-### 2. Start Minikube
-```sh
-minikube start
-```
+For managing database passwords securely, we use Kubernetes secrets. For detailed instructions on how to create secrets, refer to the [Secrets Management guide](docs/secrets_management.md).
 
-### 3. Apply Kubernetes Configurations
-Run the following command to deploy all configurations from the `k8s` directory:
-```sh
-kubectl apply -f k8s/
-```
+## Debugging and Troubleshooting
 
-### 4. Verify Deployments
-Check if all pods are running correctly:
-```sh
-kubectl get pods
-```
+For debugging and troubleshooting tips, refer to the [Debugging and Troubleshooting guide](docs/debugging.md).
 
-Check if services are running:
-```sh
-kubectl get services
-```
-
-### 5. Access the DRF Application
-Find the Minikube service URL:
-```sh
-minikube service drf-app-service --url
-```
-Use the provided URL to access the Django REST Framework application.
-
-### 6. (Optional) Debugging
-If something goes wrong, check logs:
-```sh
-kubectl logs -l app=drf-app
-```
-To describe a pod for detailed info:
-```sh
-kubectl describe pod <pod-name>
-```
-
-### 7. Stop and Cleanup
-To stop Minikube:
-```sh
-minikube stop
-```
-To delete everything:
-```sh
-kubectl delete -f k8s/
-```
-
-### 8. Django Migrations
-
-```sh
-kubectl exec -it <pod_name> -- python testify/manage.py migrate
-```
-
-### 9. Django Tests
-Run tests for django `users` app
-```sh
-kubectl exec -it <pod_name> -- python testify/manage.py test users
-```
