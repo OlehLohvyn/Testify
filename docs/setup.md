@@ -77,3 +77,11 @@ Find the Minikube service URL:
 minikube service drf-app-service --url
 ```
 Use the provided URL to access the Django REST Framework application.
+
+Once the application is deployed, run the following command to apply Django migrations:
+
+```sh
+kubectl exec -it <pod_name> -- python testify/manage.py migrate
+```
+
+This will set up the necessary database tables.
