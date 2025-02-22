@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y procps net-tools
 
 
 # Копіюємо всі інші файли проєкту в контейнер
-COPY . /app/
+COPY .. /app/
 
 # Вказуємо команду для запуску
 CMD ["python", "/app/testify/manage.py", "runserver", "0.0.0.0:8000"]

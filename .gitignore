@@ -53,4 +53,4 @@ test_data/
 Thumbs.db
 
 # k8s
-k8s/drf-service.yaml
+users-service/k8s/drf-service.yaml

@@ -2,6 +2,33 @@
 
 In this project, sensitive data such as database passwords are stored as Kubernetes secrets to ensure their security. These secrets are essential for proper application deployment and functionality.
 
+
+### ✅ **Check if Kubernetes Secrets Exist**  
+
+📌 Run the following command:  
+```sh
+kubectl get secrets
+```
+**Expected output:**
+```
+NAME                  TYPE                                  DATA   AGE
+db-secret             Opaque                                1      5m
+default-token-xxxxx   kubernetes.io/service-account-token  1      20d
+```
+🔹 If `db-secret` is listed, it means the secrets are stored correctly.  
+🔹 If `db-secret` is missing, we need to recreate it.  
+
+---
+
+### ✅ **Check the contents of `db-secret`**  
+📌 Run this command:
+```sh
+kubectl get secret db-secret -o yaml
+```
+🔹 If you see `DB_PASSWORD` under `data`, everything is fine.  
+🔹 If `db-secret` does not exist, we need to create it.  
+
+
 ## Creating Kubernetes Secrets
 
 ### 1. Using the PowerShell Script (Windows)

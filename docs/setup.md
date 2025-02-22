@@ -57,7 +57,7 @@ minikube start
 ### 4. Apply Kubernetes Configurations
 Run the following command to deploy all configurations from the `k8s` directory:
 ```sh
-kubectl apply -f k8s/
+kubectl apply -f users-service/k8s/
 ```
 
 ### 5. Verify Deployments
