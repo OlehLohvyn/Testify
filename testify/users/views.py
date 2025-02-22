@@ -101,8 +101,12 @@ class LogoutView(APIView):
         summary="User Logout",
         description=(
             "This endpoint allows authenticated users to log out by deleting their authentication token. "
-            "The token is retrieved from the `Authorization` header."
+            "The token must be passed in the `Authorization` header in the following format: "
+            "`Authorization: Token <your_token>`. "
+            "If the token is valid and belongs to the authenticated user, it will be deleted, "
+            "and the user will be logged out."
         ),
+        request=None,
         responses={
             200: inline_serializer(
                 name="LogoutSuccess",
@@ -116,6 +120,12 @@ class LogoutView(APIView):
                     "detail": serializers.CharField(help_text="Error message if logout fails."),
                 },
             ),
+            401: inline_serializer(
+                name="InvalidTokenError",
+                fields={
+                    "detail": serializers.CharField(help_text="Error message if the token is invalid or expired."),
+                },
+            ),
         },
     )
     def post(self, request):
@@ -124,9 +134,13 @@ class LogoutView(APIView):
             token = request.auth
 
             if token:
-                # Delete token
-                token.delete()
-                return Response({'detail': 'Successfully logged out.'}, status=status.HTTP_200_OK)
+                # Check if the token is valid and associated with the authenticated user
+                if token.user == request.user:
+                    # Delete token
+                    token.delete()
+                    return Response({'detail': 'Successfully logged out.'}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'detail': 'Invalid token for this user.'}, status=status.HTTP_401_UNAUTHORIZED)
             return Response({'detail': 'No token provided.'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
