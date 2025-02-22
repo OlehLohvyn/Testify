@@ -15,5 +15,5 @@ RUN apt-get update && apt-get install -y procps net-tools
 COPY .. /app/
 
 # Вказуємо команду для запуску
-CMD ["python", "/app/testify/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "/app/users_project/manage.py", "runserver", "0.0.0.0:8000"]
 
