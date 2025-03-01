@@ -16,7 +16,7 @@ cd Testify
 
 ### 2. Start Minikube
 ```sh
-minikube start
+minikube start --driver=docker
 ```
 
 ### 3. Create Kubernetes Secrets
